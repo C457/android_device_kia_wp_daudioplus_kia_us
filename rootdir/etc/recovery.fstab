@@ -1,0 +1,25 @@
+# <src> <mnt_point> <type> <mnt_flags> <fs_mgr_flags> <device2>
+
+/dev/block/platform/bdm/by-name/boot		/boot	emmc	defaults	defaults
+/dev/block/platform/bdm/by-name/system		/system	ext4	ro 			wait
+/dev/block/platform/bdm/by-name/data		/data	ext4	defaults	defaults
+/dev/block/platform/bdm/by-name/cache		/cache	ext4	defaults	defaults
+/dev/block/platform/bdm/by-name/recovery	/recovery	emmc	defaults	defaults
+/dev/block/platform/bdm/by-name/dtb         /dtb    ext4    defaults    defaults
+/dev/block/platform/bdm/by-name/misc		/misc	emmc	defaults	defaults
+/dev/block/sda		/usb	auto	defaults	defaults	/dev/block/sda1
+/dev/block/platform/tcc-sdhc.3	/sdcard	auto	defaults	defaults	defaults
+# //+[TCCQB] Add snapshot & qb_data to volume list
+/dev/block/platform/bdm/by-name/snapshot	/snapshot	ext4	defaults	defaults
+/dev/block/platform/bdm/by-name/qb_data	/qb_data	ext4	defaults	defaults
+# //-[TCCQB]
+# //
+# //+[Beyless_BSP] from daudio
+/dev/block/platform/bdm/by-name/upgrade     /upgrade        ext4    defaults    defaults
+/dev/block/platform/bdm/by-name/vr1         /vr1            ext4    defaults    defaults
+/dev/block/platform/bdm/by-name/vr2         /vr2            ext4    defaults    defaults
+/dev/block/platform/bdm/by-name/log         /log            ext4    defaults    defaults
+/dev/block/platform/bdm/by-name/navi        /navi           ext4    defaults    defaults
+/dev/block/platform/bdm/by-name/navi2       /navi2          ext4    defaults    defaults
+/dev/block/platform/bdm/by-name/oem_data    /oem_data       ext4    defaults    defaults
+# //-[Beyless_BSP]
