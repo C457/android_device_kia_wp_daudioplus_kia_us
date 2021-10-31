@@ -1,4 +1,4 @@
-$(call inherit-product, device/kia/wp_daudioplus_kia_us/full_wp_daudioplus_kia_us.mk)
+$(call inherit-product, device/telechips/wp_daudioplus_kia_us/full_wp_daudioplus_kia_us.mk)
 
 # Inherit some common CM stuff.
 $(call inherit-product, vendor/cm/config/common_full_phone.mk)

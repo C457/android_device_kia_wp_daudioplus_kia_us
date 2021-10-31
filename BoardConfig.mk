@@ -31,13 +31,13 @@ TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_NO_BOOTLOADER := true
 
 # Kernel
-TARGET_KERNEL_SOURCE        := kernel/kia/tcc897x
+TARGET_KERNEL_SOURCE        := kernel/telechips/tcc897x
 BOARD_KERNEL_CMDLINE        := console=ttyTCC0,115200n8 androidboot.console=ttyTCC0
 BOARD_KERNEL_BASE           := 0x80000000
 TARGET_KERNEL_CONFIG        := wp_daudioplus_kia_us_defconfig
 
 # Recovery
-TARGET_RECOVERY_FSTAB := device/kia/wp_daudioplus_kia_us/rootdir/etc/recovery.fstab
+TARGET_RECOVERY_FSTAB := device/telechips/wp_daudioplus_kia_us/rootdir/etc/recovery.fstab
 
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 16777216
