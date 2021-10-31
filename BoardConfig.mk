@@ -38,6 +38,7 @@ TARGET_KERNEL_CONFIG        := wp_daudioplus_kia_us_defconfig
 
 # Recovery
 TARGET_RECOVERY_FSTAB := device/telechips/wp_daudioplus_kia_us/rootdir/etc/recovery.fstab
+TARGET_RECOVERY_UI_LIB := librecovery_ui_telechips
 
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 16777216
