@@ -20,29 +20,45 @@
 # definition file).
 #
 
+# Default device path
+DEVICE_PATH := device/telechips/wp_daudioplus_kia_us
+
 # Architecture
 TARGET_ARCH := arm
 TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_CPU_SMP := true
 TARGET_ARCH_VARIANT := armv7-a-neon
+TARGET_CPU_VARIANT := generic
 
 # Bootloader
 TARGET_NO_BOOTLOADER := true
 
-# Kernel
-TARGET_KERNEL_SOURCE        := kernel/telechips/tcc897x
-BOARD_KERNEL_CMDLINE        := console=ttyTCC0,115200n8 androidboot.console=ttyTCC0
-BOARD_KERNEL_BASE           := 0x80000000
-TARGET_KERNEL_CONFIG        := wp_daudioplus_kia_us_defconfig
-
-# Recovery
-TARGET_RECOVERY_FSTAB := device/telechips/wp_daudioplus_kia_us/rootdir/etc/recovery.fstab
-TARGET_RECOVERY_UI_LIB := librecovery_ui_telechips
-
+# Filesystem
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 16777216
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 33554432
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2147483648
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 1073741824
 BOARD_FLASH_BLOCK_SIZE := 131072
+
+# Kernel
+BOARD_KERNEL_CMDLINE        := console=ttyTCC0,115200n8 androidboot.console=ttyTCC0
+BOARD_KERNEL_BASE           := 0x80000000
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/kernel
+
+# Recovery
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
+
+# TWRP
+BOARD_CUSTOM_GRAPHICS := $(DEVICE_PATH)/recovery/graphics.c
+BOARD_HAS_NO_REAL_SDCARD := true
+RECOVERY_SDCARD_ON_DATA := true
+TW_THEME := landscape_hdpi
+TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
+
+# TWRP Debug Flags
+TWRP_INCLUDE_LOGCAT := true
+TARGET_USES_LOGD := true
+TARGET_RECOVERY_DEVICE_MODULES += debuggerd
+TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_OUT_EXECUTABLES)/debuggerd

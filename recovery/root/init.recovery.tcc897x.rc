@@ -1,0 +1,23 @@
+on fs
+mount	ext4	/dev/block/platform/bdm/by-name/system	/system	ro	wait
+    insmod /lib/modules/atmel_mxt336S_AT.ko
+
+    insmod /lib/modules/ehci-tcc.ko
+    insmod /lib/modules/ohci-tcc.ko
+
+    insmod /lib/modules/jnl.ko
+    insmod  /system/lib/modules/texfat.ko
+    insmod  /system/lib/modules/tntfs.ko
+
+on init
+    symlink /dev/block/platform/tcc-sdhc.2 /dev/block/platform/bdm
+
+    #2017.12.13 USB VBUS control timint tuning
+    write /sys/module/tcc_dwc_otg/parameters/vbus_control_enable 1
+    write /sys/devices/dwc_otg/vbus off
+        
+
+on boot
+    write /sys/devices/dwc_otg/drdmode host
+    write /sys/devices/dwc_otg/vbus on
+    write /sys/devices/dwc_otg/phystatus on

@@ -16,3 +16,6 @@
 
 ## (2) Also get non-open-source specific aspects if available
 $(call inherit-product-if-exists, vendor/telechips/wp_daudioplus_kia_us/wp_daudioplus_kia_us-vendor.mk)
+
+PRODUCT_COPY_FILES := \
+    device/telechips/wp_daudioplus_kia_us/kernel:kernel
