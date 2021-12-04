@@ -2,16 +2,12 @@ on fs
     wait /dev/block/platform/tcc-sdhc.2
     symlink /dev/block/platform/tcc-sdhc.2 /dev/block/platform/bdm
 
-    mount	ext4	/dev/block/platform/bdm/by-name/system	/system	ro	wait
+    insmod /lib/modules/mip4_ts_drv.ko
     insmod /lib/modules/atmel_mxt336S_AT.ko
+    insmod /lib/modules/siw_sw17700.ko
 
     insmod /lib/modules/ehci-tcc.ko
     insmod /lib/modules/ohci-tcc.ko
-
-    insmod /lib/modules/jnl.ko
-
-    insmod  /system/lib/modules/texfat.ko
-    insmod  /system/lib/modules/tntfs.ko
 
 on init
     #2017.12.13 USB VBUS control timint tuning
