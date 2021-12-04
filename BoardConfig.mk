@@ -43,19 +43,17 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 1073741824
 BOARD_FLASH_BLOCK_SIZE := 131072
 
 # Kernel
-BOARD_KERNEL_CMDLINE        := console=ttyTCC0,115200n8 androidboot.console=ttyTCC0
+BOARD_KERNEL_CMDLINE        := console=ttyTCC0,115200n8 androidboot.console=ttyTCC0 androidboot.selinux=permissive
 BOARD_KERNEL_BASE           := 0x80000000
 TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/kernel
 
 # Recovery
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.tcc897x
 
 # TWRP
-BOARD_CUSTOM_GRAPHICS := $(DEVICE_PATH)/recovery/graphics.c
 BOARD_HAS_NO_REAL_SDCARD := true
 RECOVERY_SDCARD_ON_DATA := true
 TW_THEME := landscape_hdpi
-TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 
 # TWRP Debug Flags
 TWRP_INCLUDE_LOGCAT := true

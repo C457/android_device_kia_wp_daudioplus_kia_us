@@ -19,3 +19,7 @@ $(call inherit-product-if-exists, vendor/telechips/wp_daudioplus_kia_us/wp_daudi
 
 PRODUCT_COPY_FILES := \
     device/telechips/wp_daudioplus_kia_us/kernel:kernel
+
+# Ramdisk
+PRODUCT_PACKAGES += \
+    fstab.tcc897x
