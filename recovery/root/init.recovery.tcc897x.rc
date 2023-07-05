@@ -8,6 +8,9 @@ on fs
 
     insmod /lib/modules/ehci-tcc.ko
     insmod /lib/modules/ohci-tcc.ko
+    
+    insmod /lib/modules/texfat.ko
+    insmod /lib/modules/tntfs.ko
 
 on init
     #2017.12.13 USB VBUS control timint tuning
