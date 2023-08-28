@@ -1,0 +1,4 @@
+# NA Onlly
+
+service sxm65hd /system/bin/sxm65hd
+    class main

@@ -1,0 +1,59 @@
+<mixer>
+  <!-- These are the initial mixer settings -->
+  <ctl name="PLL Input Clock" value="BICK1" />
+  <ctl name="Sync Domain 1 fs" value="48kHz" />
+  <ctl name="Sync Domain 1 BICK" value="64fs" />
+  <ctl name="CODEC Sync Domain" value="SD1" />
+  <ctl name="ADC1 Sync Domain" value="SD1" />
+  <ctl name="CODEC Sampling Frequency" value="48kHz:48kHz" />
+  
+  <ctl name="LRCK2/SDOUT3 Pin BICK2/SDIN3 Pin Setting" value="SDIN3,SDOUT3 Enable" />
+  
+  <ctl name="SDIN1 TDM Setting" value="TDM OFF" />
+  <ctl name="SDIN1 Slot Length" value="16bit" />
+  <ctl name="SDOUT1 TDM Setting" value="TDM OFF" />
+  <ctl name="SDOUT1 Slot Length" value="16bit" />
+
+  <ctl name="ADCM MUX" value="AINM" />
+  <ctl name="AIN1 Lch MUX" value="IN1P_N" />
+  <ctl name="AIN1 Rch MUX" value="IN2P_N" />
+  <ctl name="MicBias1 MUX" value="MicBias1" />
+  <ctl name="MicBias2 MUX" value="MicBias2" />
+
+  <ctl name="ADC1 Digital Volume L" value="207" />
+  <ctl name="ADC1 Digital Volume R" value="0" />
+
+  <ctl name="MixerB Ch1 Source Selector" value="ADC1" />
+  <ctl name="MixerB Ch2 Source Selector" value="ADCM" />
+  <ctl name="MixerB Input2 Data Change" value="Swap" />
+  <ctl name="MixerB Sync Domain" value="SD1" />
+
+  <ctl name="SDOUT1 Source Selector" value="MixerB" />
+  <ctl name="SDOUT1 Output Enable" value='1' />
+  <ctl name="ADC1 Mute" value='0' />
+  <ctl name="ADCM Mute" value='0' />
+
+  <ctl name="DAC1 Source Selector" value="SDIN1" />
+  <ctl name="DAC2 Source Selector" value="SDIN1" />
+  <ctl name="DAC3 Source Selector" value="SDIN1" />
+
+  <ctl name="DAC1 Mute" value='0' />
+  <ctl name="DAC2 Mute" value='0' />
+  <ctl name="DAC3 Mute" value='0' />
+
+  <path name="speaker">
+  </path>
+
+  <path name="headphone">
+  </path>
+
+  <path name="main-mic">
+  </path>
+
+  <path name="line-in">
+  </path>
+
+  <path name="hdmi-on">
+  </path>
+
+</mixer>

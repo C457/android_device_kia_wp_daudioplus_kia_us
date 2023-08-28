@@ -2,16 +2,6 @@ on fs
     wait /dev/block/platform/tcc-sdhc.2
     symlink /dev/block/platform/tcc-sdhc.2 /dev/block/platform/bdm
 
-    insmod /lib/modules/mip4_ts_drv.ko
-    insmod /lib/modules/atmel_mxt336S_AT.ko
-    insmod /lib/modules/siw_sw17700.ko
-
-    insmod /lib/modules/ehci-tcc.ko
-    insmod /lib/modules/ohci-tcc.ko
-    
-    insmod /lib/modules/texfat.ko
-    insmod /lib/modules/tntfs.ko
-
 on init
     #2017.12.13 USB VBUS control timint tuning
     write /sys/module/tcc_dwc_otg/parameters/vbus_control_enable 1
@@ -20,5 +10,5 @@ on init
     write /sys/module/tcc_dwc_otg/parameters/vbus_control_enable 0
 
 on boot
-	write /sys/devices/dwc_otg/usb1/force_hub_reset 0
-	write /sys/devices/dwc_otg/drdmode device
+    write /sys/devices/dwc_otg/usb1/force_hub_reset 0
+    write /sys/devices/dwc_otg/drdmode device

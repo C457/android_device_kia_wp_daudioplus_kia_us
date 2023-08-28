@@ -1,0 +1,64 @@
+on init
+    write /sys/class/android_usb/android0/f_rndis/manufacturer Telechips
+    write /sys/class/android_usb/android0/f_rndis/vendorID 140e
+    write /sys/class/android_usb/android0/f_rndis/wceis 1
+
+    #2017.12.13 USB VBUS control timint tuning
+    write /sys/module/tcc_dwc_otg/parameters/vbus_control_enable 1
+    write /sys/devices/dwc_otg/vbus off
+    write /sys/devices/dwc_otg/phystatus on
+    write /sys/module/tcc_dwc_otg/parameters/vbus_control_enable 0
+    write /dev/ttyprintk "[dwc_otg] usb.rc: on init: /sys/devices/dwc_otg/vbus off & phystatus off & vbus_control_enable 0"
+
+
+on boot
+    write /sys/class/android_usb/android0/iSerial ${ro.serialno}
+    write /sys/class/android_usb/android0/iManufacturer ${ro.product.manufacturer}
+    write /sys/class/android_usb/android0/iProduct ${ro.product.model}
+    write /dev/ttyprintk "[dwc_otg] usb.rc: on boot: do nothing"
+
+on fs
+    mkdir /dev/usb-ffs 0770 shell shell
+    mkdir /dev/usb-ffs/adb 0770 shell shell
+    mount functionfs adb /dev/usb-ffs/adb uid=2000,gid=2000
+    write /sys/class/android_usb/android0/f_ffs/aliases adb
+
+on property:sys.usb.connected=1
+    write /proc/sys/vm/dirty_ratio 5
+
+on property:sys.usb.connected=0
+    write /proc/sys/vm/dirty_ratio 20
+
+on property:sys.boot_completed=1
+#   setprop sys.usb.vbus_ctrl enable
+#   setprop sys.usb.config host
+#   write /sys/devices/dwc_otg/phystatus on
+    #2017.12.13 USB VBUS control timint tuning
+    write /dev/ttyprintk "on property:sys.boot_completed=1"
+
+# USB function configurations are moved to /system/core/rootdir/init.usb.rc
+
+on property:sys.boot.vbus=on
+    write /dev/ttyprintk "on property:sys.boot.vbus=on"
+    write /sys/module/tcc_dwc_otg/parameters/vbus_control_enable 1
+    write /sys/devices/dwc_otg/vbus on
+
+# USB mode change: Device to Host
+on property:sys.usb.mode=usb_host
+	write /dev/ttyprintk "[dwc_otg] [on property:sys.usb.mode] usb host mode: set vbus on"
+	write /sys/devices/dwc_otg/drdmode host
+	write /sys/devices/dwc_otg/vbus on
+
+# USB mode change: Host to Device
+on property:sys.usb.mode=usb_device
+	write /dev/ttyprintk "[dwc_otg] [on property:sys.usb.mode] usb device mode: force_hub_reset"
+	write /sys/devices/dwc_otg/usb1/force_hub_reset 0
+	write /dev/ttyprintk "[dwc_otg] [on property:sys.usb.mode] usb device mode: set vbus off"
+	write /sys/devices/dwc_otg/vbus off
+	write /sys/devices/dwc_otg/drdmode device
+
+on property:sys.usb.vbus_ctrl=enable
+	write /sys/module/tcc_dwc_otg/parameters/vbus_control_enable 1
+
+on property:sys.usb.vbus_ctrl=disable
+	write /sys/module/tcc_dwc_otg/parameters/vbus_control_enable 0

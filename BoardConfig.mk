@@ -31,6 +31,8 @@ TARGET_CPU_SMP := true
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_VARIANT := generic
 
+TARGET_BOARD_PLATFORM := tcc897x
+
 # Bootloader
 TARGET_NO_BOOTLOADER := true
 
@@ -43,20 +45,34 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 1073741824
 BOARD_FLASH_BLOCK_SIZE := 131072
 
 # Kernel
-BOARD_KERNEL_CMDLINE        := console=ttyTCC0,115200n8 androidboot.console=ttyTCC0 androidboot.selinux=permissive
-BOARD_KERNEL_BASE           := 0x80000000
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/kernel
+BOARD_KERNEL_BASE     := 0x80000000
+BOARD_KERNEL_CMDLINE  := console=null androidboot.selinux=permissive
+BOARD_KERNEL_PAGESIZE := 2048
+
+TARGET_KERNEL_CONFIG := wp_daudioplus_kia_us_defconfig
+TARGET_KERNEL_SOURCE := kernel/telechips/tcc897x
+
 
 # Recovery
+TARGET_RECOVERY_DEVICE_DIRS += $(DEVICE_PATH)
 TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/rootdir/etc/fstab.tcc897x
+
+# Wifi
+BOARD_WPA_SUPPLICANT_DRIVER 	 := NL80211
+WPA_SUPPLICANT_VERSION      	 := VER_0_8_X
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_bcmdhd
+BOARD_HOSTAPD_DRIVER        	 := NL80211
+BOARD_HOSTAPD_PRIVATE_LIB   	 := lib_driver_cmd_bcmdhd
+BOARD_WLAN_DEVICE           	 := bcmdhd
+WIFI_DRIVER_MODULE_NAME 	 := bcmdhd
+WIFI_DRIVER_FW_PATH_PARAM   	 := "/data/misc/wifi/firmware_path"
+WIFI_DRIVER_MODULE_PATH 	 := "/system/lib/modules/bcmdhd.ko"
+WIFI_DRIVER_MODULE_ARG		 := "iface_name=wlan0 firmware_path=/data/misc/wifi/fw_bcmdhd.bin nvram_path=/data/misc/wifi/bcmdhd.cal"
+WIFI_DRIVER_FW_PATH_STA     	 := "/system/wifi/fw_bcmdhd.bin"
+WIFI_DRIVER_FW_PATH_P2P     	 := "/system/wifi/fw_bcmdhd_p2p.bin"
+WIFI_DRIVER_FW_PATH_AP      	 := "/system/wifi/fw_bcmdhd_apsta.bin"
 
 # TWRP
 BOARD_HAS_NO_REAL_SDCARD := true
 RECOVERY_SDCARD_ON_DATA := true
 TW_THEME := landscape_hdpi
-
-# TWRP Debug Flags
-TWRP_INCLUDE_LOGCAT := true
-TARGET_USES_LOGD := true
-TARGET_RECOVERY_DEVICE_MODULES += debuggerd
-TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_OUT_EXECUTABLES)/debuggerd

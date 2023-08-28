@@ -22,7 +22,7 @@
 #
  
 # Inherit from those products. Most specific first.
-$(call inherit-product, build/target/product/embedded.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 # Inherit from device
 $(call inherit-product, device/telechips/wp_daudioplus_kia_us/device.mk)
 

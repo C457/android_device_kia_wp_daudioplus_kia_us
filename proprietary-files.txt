@@ -1,0 +1,93 @@
+#lib/libandroid_runtime.so
+
+# Audio
+lib/hw/audio.primary.tcc897x.so
+lib/libavnspdifsound.so
+lib/libspdifsound.so
+
+# Audio HDMI
+#lib/hw/hdmipassthrough.tcc897x.so
+#lib/libhdmipassthrough_client.so
+#lib/libhdmisound.so
+
+# Camera
+#lib/hw/camera.tcc897x.so
+#lib/hw/rearcamera.tcc897x.so
+#lib/libcameraservice.so
+#lib/librearcamera_client.so
+#lib/librearcameraservice.so
+
+#tcc.solution.mbox
+#lib/libinputservice.so
+
+# GPS
+lib/hw/gps.tcc897x.so
+lib/hw/gpstime.tcc897x.so
+
+# Graphics
+lib/hw/gralloc.tcc897x.so
+lib/hw/hwcomposer.tcc897x.so
+lib/libextenddisplay.so
+#lib/libsurfaceflinger.so
+vendor/lib/egl/libGLES_mali.so
+
+# Lights
+hw/lights.tcc897x.so
+
+# Media
+lib/libDirect.Decoder.Wrapper.so
+lib/libDirect.Encoder.Wrapper.so
+lib/libDirect.Player.Wrapper.so
+lib/libDirect.Render.Wrapper.so
+lib/libHDCP2api.so
+lib/libOMX.TCC.aacdec.so
+lib/libOMX.TCC.apedec.so
+lib/libOMX.TCC.audio.so
+lib/libOMX.TCC.base.so
+lib/libOMX.TCC.flacdec.so
+lib/libOMX.TCC.google.vpxdec.so
+lib/libOMX.TCC.mp2dec.so
+lib/libOMX.TCC.mp3dec.so
+lib/libOMX.TCC.mp3enc.so
+lib/libOMX.TCC.pcmdec.so
+lib/libOMX.TCC.VideoDec.so
+lib/libOMX.TCC.VideoEnc.so
+lib/libOMX.TCC.vorbisdec.so
+lib/libOMX.TCC.wmadec.so
+lib/libpmap.so
+#lib/libstagefright_foundation.so
+#lib/libstagefright.so
+lib/libTCC_CDK_LIB.so
+lib/libTCC_CDK_WRAPPER.so
+lib/libTCC.flacdec.so
+lib/libTCC.mp3dec.so
+lib/libTCC_OMXCore.so
+vendor/lib/libstagefrighthw.so
+vendor/lib/libTCCInterSubtitle.so
+vendor/lib/libTCCsubtitle.so
+vendor/lib/libtcc.video.call.direct.interface.so
+
+# Power
+hw/power.tcc897x.so
+
+# RIL
+bin/rild
+bin/sxm65hd
+lib/libreference-ril.so
+
+# Sensors
+bin/akmd8975
+hw/sensors.tcc897x.so
+
+# Wifi
+#lib/libhardware_legacy.so
+wifi/89359.clm_blob
+wifi/89359_mfg.clm_blob
+wifi/bcmdhd5.cal
+wifi/bcmdhd9.cal
+wifi/bcmdhd.cal
+wifi/bcmdhd.ko
+wifi/fw_bcmdhd5.bin
+wifi/fw_bcmdhd.bin
+wifi/fw_bcmdhd_mfg5.bin
+wifi/fw_bcmdhd_mfg.bin

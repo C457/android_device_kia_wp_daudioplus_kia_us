@@ -1,0 +1,452 @@
+on init
+	# prepare working directory for cdrom_nameconv service
+	mkdir /storage/cdrom_actual 0000 system system
+
+on post-fs-data
+    mkdir /data/system 0775 system system
+
+    # prepare dropbox directory
+    mkdir /data/system/dropbox 0700 system system
+
+    # mount log partition
+    mount none /storage/log /data/system/dropbox bind
+
+    # fix permissions
+    chown system system /data/system/dropbox
+    chmod 0700 /data/system/dropbox
+
+    # prepare tombstone dst directory
+    mkdir /data/tombstones 0755 system system
+
+    # preare tombstone src directory
+    mkdir /data/system/dropbox/tombstones 0755 system system
+
+    # mount tombstones
+    mount none /data/system/dropbox/tombstones /data/tombstones bind
+
+    # fix permissions
+    chown system system /data/tombstones
+    chmod 0755 /data/tombstones
+
+    # prepare vcrm_log directory
+    mkdir /data/system/dropbox/vcrm_log 0777 system system
+
+    # fix permissions
+    chown system system /data/system/dropbox/vcrm_log
+    chmod 0777 /data/system/dropbox/vcrm_log
+
+    # prepare vcrm_log directory : managed by tele vcrm part
+    mkdir /data/system/dropbox/vcrm_log/Error_Log 0777 system system
+    mkdir /data/system/dropbox/vcrm_log/System_Log 0777 system system
+
+    # prepare error_vr directory : managed by vr part
+    mkdir /data/system/dropbox/vcrm_log/Error_Log/error_vr 0777 system system
+
+    # prepare error log folders : managed by tele vcrm part
+    mkdir /data/system/dropbox/vcrm_log/Error_Log/error_acn 0777 system system
+    mkdir /data/system/dropbox/vcrm_log/Error_Log/error_remote 0777 system system
+    mkdir /data/system/dropbox/vcrm_log/Error_Log/error_comm 0777 system system
+
+    # prepare Error/System log folders for VCRM 2.0 sending : managed by tele vcrm part
+    mkdir /data/system/dropbox/vcrm_log/SystemLog/ 0777 system system
+    mkdir /data/system/dropbox/vcrm_log/ErrorLog/ 0777 system system    
+    
+   # prepare error log folders : managed by update group, wookeun.chung, 2019-11-06
+    mkdir /data/system/dropbox/vcrm_log/Error_Log/error_ota 0777 system system
+
+   # prepare modem directory
+   mkdir /data/misc/modem 0777 radio radio
+
+   # fix permissions
+   chown radio radio /data/misc/modem
+   chmod 0777 /data/misc/modem
+
+on fs
+    # change permission /storage/upgrade partition
+    chmod 0777 /storage/upgrade
+    chmod 0777 /storage/upgrade/micom
+
+    # mount log partition
+    # mount none /storage/log /data/system/dropbox bind
+
+    # mount tombstones
+    #mount none /data/system/dropbox/tombstones /data/tombstones bind
+
+    # fix permissions
+    # chown system system /data/system/dropbox
+    # chmod 0700 /data/system/dropbox
+
+    # prepare new log directory
+    mkdir /storage/log/newlog 0777 system system
+
+    # prepare modem directory
+    mkdir /data/misc/modem 0777 radio radio
+    
+     # prepare always log directory
+    mkdir /oem_data/log 0777 system system    
+
+    # start log services
+    start klogger
+
+on boot
+    # start log services
+    start log_summary
+
+on post-fs
+    #2017.03.29 start UpdateAgent Manager(uagentd)
+    #start uagentd
+    mkdir /mnt/shm/TPEG 0777 system system
+
+service micomd /system/bin/micomd /dev/ttyTCC2
+    class main
+
+service hscand /system/bin/hscand /dev/tcc-tsif1
+    disabled
+    oneshot
+
+service micomlog /system/bin/micomlog
+    user root system
+    group system log
+    disabled
+    oneshot
+
+service earlycamlog /system/bin/earlycamlog.sh
+    user root system
+    group system log
+    disabled
+    oneshot
+
+# tune2fs
+service tune2fs /sbin/tune2fs -m 10 -g system -u system /dev/block/platform/bdm/by-name/data
+    class core
+    user root
+    group root
+    oneshot
+
+#2017.03.14 Added the Deamon about UpdateAgent Manager(uagentd)
+service uagentd /system/bin/uagentd uagentd
+	user root system
+	group system log
+	oneshot
+
+service cdda_player /system/bin/cdda_player
+    disabled
+
+service btphone8 /system/bin/cdda_player btphone8
+    disabled
+
+service btphone16 /system/bin/cdda_player btphone16
+    disabled
+
+service mtsbypass8 /system/bin/cdda_player mtsphone8
+    disabled
+
+service mtsbypass16 /system/bin/cdda_player mtsphone16
+    disabled
+
+service setsched /system/bin/schedinit
+    disabled
+    oneshot
+
+service dspcopy /system/bin/dspcopy
+    disabled
+    oneshot
+
+service cdrom_mount /system/bin/cdrom mount
+	disabled
+	oneshot
+
+service cdrom_umount /system/bin/cdrom umount
+	disabled
+	oneshot
+
+service cdrom_nameconv /system/bin/fs_nameconv /dev/block/tcr0 /storage/cdrom_actual /storage/cdrom 1023 1023
+	disabled
+	oneshot
+
+# util for guider
+service guider_comp /system/bin/guider_util.sh compress
+    user root
+    oneshot
+    disabled
+
+service guider_cpy /system/bin/guider_util.sh copy_to_usb
+    user root
+    oneshot
+    disabled
+
+# log system
+service copy_log_to_usb /system/bin/export_log -c
+    user root
+    oneshot
+    disabled
+
+# For GPS
+service copy_drinfo /system/bin/copyfile /storage/sdcard0/DRInfoLog /storage/usb0
+    user root
+    oneshot
+    disabled
+
+service gpsreplay /system/bin/cp -p /storage/sdcard0/DRInfoLog/DRInfoLog.txt /data/local/tmp/
+    user root
+    oneshot
+    disabled
+
+# dumpstate to file
+service logdump /system/bin/export_log
+    user root
+    oneshot
+    disabled
+
+# dumpstate to file from watchdog
+service logdump_watchdog /system/bin/export_log -w
+    user root
+    oneshot
+    disabled
+
+service dumpwithcapture /system/bin/export_log -p
+    user root
+    oneshot
+    disabled
+
+# screencapture and dumpstate to file for new log
+service newlogdump /system/bin/export_log -n
+    user root
+    oneshot
+    diabled
+
+# logcat dump
+service logcatdump /system/bin/logcat -v time -f /data/system/dropbox/logcatdump.txt -n 20 -r 1024
+    user system
+    group system log
+    disabled
+
+# event log dump
+service eventlogdump /system/bin/logcat -v threadtime -b events -f /oem_data/log/eventlogs.log -n 100 -r 1024
+    user system
+    group system log
+    disabled
+
+# logcat log dump for during booting
+service logcatbootdump /system/bin/logcat -v threadtime -f /oem_data/log/logcatbootlog.log -n 100 -r 1024
+    user system
+    group system log
+    disabled
+
+# VCRM log
+service clearvcrmlog /system/bin/logcat -b mobis -c
+    user system
+    group system log
+    disabled
+
+service vcrmlog /system/bin/logcat -b mobis -v raw -f /mnt/vcrm_log/Standard_Log.dat
+    user system
+    group system log
+    disabled
+
+service vcrmsystemlog   /system/bin/export_log -s
+    user root
+    oneshot
+    disabled
+
+# logcat dump oneshot
+service logdump_oneshot /system/bin/logcatdump_oneshot
+    user system
+    group system log
+    oneshot
+    disabled
+
+# testlog
+service testlogdump /system/bin/testlog
+    user system
+    group system log
+    oneshot
+    disabled
+
+
+# log summary
+service log_summary /system/bin/log_summary
+    user system
+    group log
+    disabled
+
+on property:persist.sys.logcatdump.enabled=true
+    start logcatdump
+
+on property:persist.sys.logcatdump.enabled=false
+    stop logcatdump
+
+on property:persist.sys.eventlog.enabled=true
+    start eventlogdump
+    write /dev/ttyprintk "[LOG] start eventlogdump"
+
+on property:persist.sys.eventlog.enabled=false
+    stop eventlogdump
+    write /dev/ttyprintk "[LOG] stop eventlogdump"
+
+on property:persist.sys.logcatboot.enabled=true
+    start logcatbootdump
+    write /dev/ttyprintk "[LOG] start logcatbootdump"
+
+on property:persist.sys.logcatboot.enabled=false
+    stop logcatbootdump
+    write /dev/ttyprintk "[LOG] stop logcatbootdump"
+
+on property:sys.logcatboot.finished=true
+    stop logcatbootdump
+    write /dev/ttyprintk "[LOG] stop logcatbootdump"
+
+# For manual mount
+service manual_mount /system/bin/mount
+    oneshot
+    disabled
+
+# udisk remount
+service udisk_remount_ro /system/bin/mount -o remount,nosync,noatime,nodiratime -r /dev/block/sda1 /storage/usb0
+    oneshot
+    disabled
+
+service udisk_remount_rw /system/bin/mount -o remount,sync,noatime,nodiratime -w /dev/block/sda1 /storage/usb0
+    oneshot
+    disabled
+
+# sdcard remount fuse directory -> real mount directory (ex. /storage/sdcard1 -> /mnt/media_rw/sdcard1)
+service sd_remount_ro /system/bin/mount -o remount,nosync -r /dev/block/mmcblk1p1 /mnt/media_rw/sdcard1
+    oneshot
+    disabled
+
+service sd_remount_rw /system/bin/mount -o remount,sync -w /dev/block/mmcblk1p1 /mnt/media_rw/sdcard1
+    oneshot
+    disabled
+
+service sdcard_emulation /system/bin/sdcard_emulation
+    disabled
+    oneshot
+
+service factoryd /system/bin/factoryd
+    disabled
+
+# NA KIA Telematics
+service dtmf_receiver /system/bin/dtmf_receiver
+    disabled
+    oneshot
+
+# ADB TCP
+on property:persist.service.adb.tcp.enable=1
+    start set_adb_ip
+    start set_adb_port
+    stop adbd
+    start adbd
+
+service set_adb_ip /system/bin/ifconfig eth0 192.168.0.123
+    oneshot
+    disabled
+
+service set_adb_port /system/bin/setprop service.adb.tcp.port 5555
+    oneshot
+    disabled
+
+# SW VERIFY TEST
+on property:persist.sys.swverify=mat
+    start set_adb_ip
+    start matagent
+
+on property:persist.sys.swverify=nemesis
+    start dbus
+    start nemesis
+
+service dbus /system/bin/dbus-daemon --system --nofork
+    socket dbus stream 666 bluetooth bluetooth
+    user bluetooth
+    group bluetooth net_bt_admin
+    disabled
+
+service nemesis /data/local/tmp/nemesis/nemesis
+    oneshot
+    disabled
+
+service matagent /data/local/tmp/MAT/matagent
+    oneshot
+    disabled
+
+# for SMon(screen monitor) Service
+service smond /system/bin/smond
+    class main
+    disabled
+
+on property:sys.boot.enabled_screen=true
+    start smond
+
+# LGIT RIL
+service pppd_gprs /etc/init.gprs-pppd
+    user root
+    group radio cache inet misc
+    disabled
+    oneshot
+
+# Add LGIT Data Service
+service dhcpcd_gobi  /etc/init.gobi-dhcpd
+    user root
+    group radio cache inet misc
+    disabled
+    oneshot
+
+service dhcpcd_gobi_1 /etc/init.gobi-dhcpd_1
+    user root
+    group radio cache inet misc
+    disabled
+    oneshot
+
+service dhcpcd_gobi_2 /etc/init.gobi-dhcpd_2
+    user root
+    group radio cache inet misc
+    disabled
+    oneshot
+
+on property:ril.lgit.dhcp.rmnet0=start
+    start dhcpcd_gobi
+
+on property:ril.lgit.dhcp.rmnet0=stop
+    stop dhcpcd_gobi
+
+on property:ril.lgit.dhcp.rmnet1=start
+    start dhcpcd_gobi_1
+
+on property:ril.lgit.dhcp.rmnet1=stop
+    stop dhcpcd_gobi_1
+
+on property:ril.lgit.dhcp.rmnet2=start
+    start dhcpcd_gobi_2
+
+on property:ril.lgit.dhcp.rmnet2=stop
+    stop dhcpcd_gobi_2
+
+# Add userlevel kernel log
+service klogger /system/bin/klogd
+	oneshot
+	class late_start
+
+#add for mirrorlink dhcpcd usb0
+service dhcpcd_usb0 /system/bin/dhcpcd -A usb0
+    class core
+    oneshot
+    disabled
+
+service dhcpcd_stop_usb0 /system/bin/dhcpcd -k usb0
+    class core
+    oneshot
+    disabled
+
+service netcfg_usb0_up /system/bin/ifconfig usb0 up
+    oneshot
+    disabled
+
+service netcfg_usb0_down /system/bin/ifconfig usb0 down
+    oneshot
+    disabled
+
+#drop caches
+service dropCaches /system/bin/dropCaches.sh
+    user root
+    oneshot
+    disabled

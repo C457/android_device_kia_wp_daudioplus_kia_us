@@ -1,2 +1,2 @@
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/omni_wp_daudioplus_kia_us.mk
+    $(LOCAL_DIR)/full_wp_daudioplus_kia_us.mk

@@ -1,0 +1,2 @@
+on init
+    symlink /dev/block/platform/tcc-sdhc.2 /dev/block/platform/bdm

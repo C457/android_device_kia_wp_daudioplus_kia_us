@@ -1,17 +1,23 @@
 # Android fstab file.
+#<src> <mnt_point> <type> <mnt_flags> <fs_mgr_flags> <device2>
 # The filesystem that contains the filesystem checker binary (typically /system) cannot
 # specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK
 
-#<src>                                             <mnt_point>       <type>  <mnt_flags and options>                                     <fs_mgr_flags>
-/dev/block/platform/bdm/by-name/boot               /boot             emmc    defaults                                                    defaults
-//dev/block/platform/bdm/by-name/recovery          /recovery         emmc    defaults                                                    defaults
-/dev/block/platform/bdm/by-name/system             /system           ext4    ro                                                          wait
-/dev/block/platform/bdm/by-name/cache              /cache            ext4    noatime,nosuid,nodev,errors=continue,data=journal           wait,check
-/dev/block/platform/bdm/by-name/data               /data             ext4    noatime,nosuid,nodev,errors=continue,data=journal           wait,check,encryptable=/dev/block/platform/bdm/by-name/data
+/dev/block/platform/bdm/by-name/system     	/system      		ext4    ro                                                  wait
+/dev/block/platform/bdm/by-name/cache     	/cache       		ext4    noatime,nosuid,nodev,errors=continue,data=journal   wait,check
+/dev/block/platform/bdm/by-name/data     	/data        		ext4    noatime,nosuid,nodev,errors=continue,data=journal   wait,check,encryptable=/dev/block/platform/bdm/by-name/data
+/dev/block/platform/bdm/by-name/vr1             /storage/vr1    	ext4    ro                                                   wait,check
+/dev/block/platform/bdm/by-name/upgrade		/storage/upgrade   	ext4    noatime,nosuid,nodev,errors=continue,data=journal   wait,check
+/dev/block/platform/bdm/by-name/vr2         /storage/vr2    		ext4    ro						     wait
+/dev/block/platform/bdm/by-name/oem_data    /oem_data    		ext4    noatime,nosuid,nodev,errors=continue,data=journal   wait,check
+/dev/block/platform/bdm/by-name/log         /storage/log    	ext4    noatime,nosuid,nodev,errors=continue,data=journal   wait,check
+/dev/block/platform/bdm/by-name/navi            /storage/navi    	ext4    ro                                                   wait,check
+/dev/block/platform/bdm/by-name/navi2           /storage/navi2      ext4    ro                                                   wait,check
 
-/dev/block/platform/bdm/by-name/upgrade            /storage/upgrade  ext4    noatime,nosuid,nodev,errors=continue,data=journal           wait,check,encryptable=/dev/block/platform/bdm/by-name/upgrade
-/dev/block/platform/bdm/by-name/vr2                /storage/vr2      ext4    noatime,nosuid,nodev,errors=continue,data=journal           wait,check,encryptable=/dev/block/platform/bdm/by-name/vr2
-/dev/block/platform/bdm/by-name/oem_data           /oem_data         ext4    noatime,nosuid,nodev,errors=continue,data=journal           wait,check,encryptable=/dev/block/platform/bdm/by-name/oem_data
-/dev/block/platform/bdm/by-name/log                /storage/log      ext4    noatime,nosuid,nodev,errors=continue,data=journal           wait,check,encryptable=/dev/block/platform/bdm/by-name/log
+/devices/tcc-sdhc.3	/storage/sdcard1	vfat	defaults	voldmanaged=sdcard1:auto
+/devices/tcc-ehci	/storage/usb0		vfat	defaults	voldmanaged=usb0:auto		/devices/dwc_otg
 
-/devices/tcc-ehci		                    auto              auto	defaults                                                    voldmanaged=usbdisk:auto
+#+NATIVE_PLATFORM [FUNCTION_STORAGE_SUPPORT_CDROM] For Automotive Service
+# CDROM
+/devices/platform/tcc_cdrom	/storage/cdrom	vfat	defaults	voldmanaged=cdrom:auto
+#-NATIVE_PLATFORM 
